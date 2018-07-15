@@ -1,0 +1,32 @@
+{
+  "name": "observable-runtime-ui",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev:server": "nodemon --ignore public --ignore test index.js",
+    "dev:frontend": "watchify -p [ browserify-livereload --host 127.0.0.1 --port 3333 ] public/index.js -o public/bundle.js",
+    "dev": "concurrently 'yarn dev:server' 'yarn dev:frontend'",
+    "dist": "browserify -t sheetify/transform public/index.js -o public/bundle.js",
+    "start": "node index.js"
+  },
+  "author": "Szymon Kaliski <hi@szymonkaliski.com> (http://szymonkaliski.com)",
+  "license": "MIT",
+  "dependencies": {
+    "@observablehq/notebook-runtime": "^1.2.3",
+    "@thi.ng/atom": "^1.4.4",
+    "@thi.ng/hdom": "^3.0.29",
+    "chokidar": "^2.0.4",
+    "collections": "^5.1.4",
+    "d3-require": "^1.1.0",
+    "express": "^4.16.3",
+    "socket.io": "^2.1.1",
+    "socket.io-client": "^2.1.1"
+  },
+  "devDependencies": {
+    "browserify-livereload": "^1.0.10",
+    "concurrently": "^3.6.0",
+    "nodemon": "^1.18.2",
+    "watchify": "^3.11.0"
+  }
+}
