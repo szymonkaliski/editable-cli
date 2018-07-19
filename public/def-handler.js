@@ -1,4 +1,5 @@
 const crypto = require("crypto");
+const getParameterNames = require("get-parameter-names");
 const { Runtime, Library } = require("@observablehq/notebook-runtime");
 
 const pick = (obj, props) => {
@@ -16,7 +17,8 @@ const md5 = str =>
     .digest("hex");
 
 module.exports = () => {
-  const runtime = new Runtime(new Library());
+  const library = new Library();
+  const runtime = new Runtime(library);
   const mod = runtime.module();
 
   const runningDefs = {};
@@ -24,15 +26,19 @@ module.exports = () => {
   let seenDefs = {};
   let idx = 0;
 
-  const def = (id, inputs, impl) => {
+  const def = (id, impl) => {
     seenDefs[id] = true;
 
     if (!impl) {
-      impl = inputs;
-      inputs = [];
+      impl = id;
+      id = undefined;
     }
 
     const hash = md5(impl.toString());
+
+    if (!id) {
+      id = hash;
+    }
 
     const defIdx = idx;
     idx = idx + 1;
@@ -40,7 +46,7 @@ module.exports = () => {
     let tmpDef = {
       idx: defIdx,
       id,
-      inputs,
+      impl,
       hash
     };
 
@@ -53,32 +59,51 @@ module.exports = () => {
         return;
       } else {
         runningDef.variable.delete();
+        delete runningDef.variable;
       }
     }
-
-    tmpDef.variable = mod.variable({
-      fulfilled: value => {
-        if (value !== undefined) {
-          tmpDef.value = value;
-        }
-      },
-      rejected: error => {
-        tmpDef.error = error;
-      }
-    });
-
-    tmpDef.variable.define(id, inputs, impl);
 
     runningDefs[id] = tmpDef;
   };
 
-  const cleanupDefs = () => {
+  const cleanNonExistingsDefs = () => {
     Object.keys(runningDefs)
       .filter(runningId => !seenDefs[runningId])
       .forEach(deletedDefId => {
-        runningDefs[deletedDefId].variable.delete();
+        if (runningDefs[deletedDefId].variable) {
+          runningDefs[deletedDefId].variable.delete();
+        }
+
         delete runningDefs[deletedDefId];
       });
+  };
+
+  const startVariables = () => {
+    Object.keys(runningDefs).map(id => {
+      const runningDef = runningDefs[id];
+
+      if (runningDef.variable) {
+        return;
+      }
+
+      runningDef.inputs = getParameterNames(runningDef.impl).filter(
+        param =>
+          runningDefs[param] !== undefined || library[param] !== undefined
+      );
+
+      runningDef.variable = mod.variable({
+        fulfilled: value => {
+          if (value !== undefined) {
+            runningDef.value = value;
+          }
+        },
+        rejected: error => {
+          runningDef.error = error;
+        }
+      });
+
+      runningDef.variable.define(id, runningDef.inputs, runningDef.impl);
+    });
   };
 
   return {
@@ -88,7 +113,8 @@ module.exports = () => {
 
       try {
         eval(codeStr);
-        cleanupDefs();
+        cleanNonExistingsDefs();
+        startVariables();
       } catch (e) {
         console.error(e);
       }

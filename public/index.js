@@ -27,8 +27,6 @@ const app = () => {
     defHandler.get().map(({ id, hash, value, error }) => {
       const head = ["div", { key: hash }];
 
-      // console.log(value);
-
       if (error) {
         return [...head, `${id} error: ${error}`];
       }
