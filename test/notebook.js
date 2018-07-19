@@ -1,16 +1,16 @@
-def("sum", ["a", "b"], (a, b) => a + b);
+// def("sum", ["a", "b"], (a, b) => a + b);
 
-def("a", 5);
+// def("a", 5);
 
-def("b", 90 / 10);
+// def("b", 90 / 10);
 
-def("d3.array", ["require"], require => require("d3-array"));
+// def("d3.array", ["require"], require => require("d3-array"));
 
-def("x", ["d3.array", "a"], (array, a) => array.range(a));
+// def("x", ["d3.array", "a"], (array, a) => array.range(a));
 
-def("y", ["d3.array", "sum"], (array, sum) => array.range(sum));
+// def("y", ["d3.array", "sum"], (array, sum) => array.range(sum));
 
-def("z", ["a"], a => a * -2);
+// def("z", ["a"], a => a * -2);
 
 def("tick", ["Promises"], function*(Promises) {
   let i = 0;
@@ -24,3 +24,6 @@ def("tick", ["Promises"], function*(Promises) {
 
 def("i", ["tick"], () => new Date());
 
+// def("date-fns", ["require"], require => require("date-fns"));
+
+// def("test1", ["date-fns"], ({ parse }) => parse("asd"));
