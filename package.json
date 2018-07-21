@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev:server": "nodemon --ignore public --ignore test index.js",
-    "dev:frontend": "watchify -p [ browserify-livereload --host 127.0.0.1 --port 3333 ] public/index.js -o public/bundle.js",
+    "dev:frontend": "watchify -p [ browserify-livereload --host 127.0.0.1 --port 3333 ] -t sheetify/transform public/index.js -o public/bundle.js",
     "dev": "concurrently 'yarn dev:server' 'yarn dev:frontend'",
     "dist": "browserify -t sheetify/transform public/index.js -o public/bundle.js",
     "start": "node index.js"
@@ -16,18 +16,21 @@
     "@observablehq/notebook-runtime": "^1.2.3",
     "@thi.ng/atom": "^1.4.4",
     "@thi.ng/hdom": "^3.0.29",
+    "@thi.ng/interceptors": "^1.8.8",
     "chokidar": "^2.0.4",
     "collections": "^5.1.4",
     "d3-require": "^1.1.0",
     "express": "^4.16.3",
     "get-parameter-names": "^0.3.0",
     "socket.io": "^2.1.1",
-    "socket.io-client": "^2.1.1"
+    "socket.io-client": "^2.1.1",
+    "tachyons": "^4.11.0"
   },
   "devDependencies": {
     "browserify-livereload": "^1.0.10",
     "concurrently": "^3.6.0",
     "nodemon": "^1.18.2",
+    "sheetify": "^7.3.3",
     "watchify": "^3.11.0"
   }
 }

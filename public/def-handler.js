@@ -2,6 +2,8 @@ const crypto = require("crypto");
 const getParameterNames = require("get-parameter-names");
 const { Runtime, Library } = require("@observablehq/notebook-runtime");
 
+const { EV_SET_DEFS } = require("./consts");
+
 const pick = (obj, props) => {
   let out = {};
 
@@ -16,7 +18,7 @@ const md5 = str =>
     .update(str)
     .digest("hex");
 
-module.exports = () => {
+module.exports = ({ bus }) => {
   const library = new Library();
   const runtime = new Runtime(library);
   const mod = runtime.module();
@@ -78,6 +80,16 @@ module.exports = () => {
       });
   };
 
+  // we're not being smart here, updating everything in state, always
+  const updateAllDefs = () => {
+    const defs = Object.keys(runningDefs)
+      .map(id => runningDefs[id])
+      .sort((a, b) => a.idx - b.idx)
+      .map(def => pick(def, ["id", "value", "error", "hash"]));
+
+    bus.dispatch([EV_SET_DEFS, defs]);
+  };
+
   const startVariables = () => {
     Object.keys(runningDefs).map(id => {
       const runningDef = runningDefs[id];
@@ -94,11 +106,14 @@ module.exports = () => {
       runningDef.variable = mod.variable({
         fulfilled: value => {
           if (value !== undefined) {
+            runningDef.error = undefined;
             runningDef.value = value;
+            updateAllDefs();
           }
         },
         rejected: error => {
           runningDef.error = error;
+          updateAllDefs();
         }
       });
 
@@ -118,13 +133,6 @@ module.exports = () => {
       } catch (e) {
         console.error(e);
       }
-    },
-
-    get: () => {
-      return Object.keys(runningDefs)
-        .map(id => runningDefs[id])
-        .sort((a, b) => a.idx - b.idx)
-        .map(def => pick(def, ["id", "value", "error", "hash"]));
     }
   };
 };
