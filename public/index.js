@@ -119,16 +119,19 @@ const createApp = () => {
     const { defs } = bus.deref();
 
     return [
-      "div.w-100.mw10.center.pa2.sans-serif",
+      "div.w-100.mw10.center.pa2.code",
       defs.map(({ id, value, error }) => {
         let color = error ? "dark-red" : "";
 
         return [
           "div",
           [
-            `dl.flex.f6.lh-title.mv2.${color}`,
-            ["dt.dib.b.w-20.tr.pr2", id],
-            ["dd.dib.ml0.gray.w-80", error || renderValue(bus, id, value)]
+            "dl.flex.f7.lh-title.mv2",
+            [`dt.dib.b.w-20.tr.pr2.${color}`, id],
+            [
+              `dd.dib.ml0.gray.w-80.${color}`,
+              error || renderValue(bus, id, value)
+            ]
           ]
         ];
       })
