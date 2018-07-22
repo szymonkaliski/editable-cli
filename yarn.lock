@@ -41,16 +41,6 @@
   dependencies:
     "@thi.ng/errors" "^0.1.5"
 
-"@thi.ng/atom@^1.4.4":
-  version "1.4.4"
-  resolved "https://registry.yarnpkg.com/@thi.ng/atom/-/atom-1.4.4.tgz#954c9b434e3dc9771d4521027801b6663a75d43b"
-  dependencies:
-    "@thi.ng/api" "^4.0.4"
-    "@thi.ng/checks" "^1.5.5"
-    "@thi.ng/equiv" "^0.1.5"
-    "@thi.ng/errors" "^0.1.4"
-    "@thi.ng/paths" "^1.5.0"
-
 "@thi.ng/atom@^1.4.5":
   version "1.4.5"
   resolved "https://registry.yarnpkg.com/@thi.ng/atom/-/atom-1.4.5.tgz#b138057b0fdde71a26b2788f4f61999a52ae819c"
@@ -144,13 +134,6 @@
   dependencies:
     "@thi.ng/api" "^4.0.4"
     "@thi.ng/dcons" "^1.0.5"
-    "@thi.ng/errors" "^0.1.4"
-
-"@thi.ng/paths@^1.5.0":
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/@thi.ng/paths/-/paths-1.5.0.tgz#7666616baf9a5902acd1d6298464321663ecdbde"
-  dependencies:
-    "@thi.ng/checks" "^1.5.5"
     "@thi.ng/errors" "^0.1.4"
 
 "@thi.ng/paths@^1.5.1":
@@ -741,12 +724,6 @@ collection-visit@^1.0.0:
     map-visit "^1.0.0"
     object-visit "^1.0.0"
 
-collections@^5.1.4:
-  version "5.1.4"
-  resolved "https://registry.yarnpkg.com/collections/-/collections-5.1.4.tgz#4a50076da969fa87048b9c852c8996ceb42249af"
-  dependencies:
-    weak-map "~1.0.x"
-
 color-convert@^1.9.0:
   version "1.9.2"
   resolved "https://registry.yarnpkg.com/color-convert/-/color-convert-1.9.2.tgz#49881b8fba67df12a96bdf3f56c0aab9e7913147"
@@ -773,6 +750,10 @@ commander@2.6.0:
 commander@^2.15.1:
   version "2.16.0"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.16.0.tgz#f16390593996ceb4f3eeb020b31d78528f7f8a50"
+
+commander@~2.13.0:
+  version "2.13.0"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-2.13.0.tgz#6964bca67685df7c1f1430c584f07d7597885b9c"
 
 component-bind@1.0.0:
   version "1.0.0"
@@ -3584,6 +3565,13 @@ typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
 
+uglify-es@^3.3.9:
+  version "3.3.9"
+  resolved "https://registry.yarnpkg.com/uglify-es/-/uglify-es-3.3.9.tgz#0c1c4f0700bed8dbc124cdb304d2592ca203e677"
+  dependencies:
+    commander "~2.13.0"
+    source-map "~0.6.1"
+
 ultron@1.0.x:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/ultron/-/ultron-1.0.2.tgz#ace116ab557cd197386a4e88f4685378c8b2e4fa"
@@ -3731,10 +3719,6 @@ watchify@^3.11.0:
     outpipe "^1.1.0"
     through2 "^2.0.0"
     xtend "^4.0.0"
-
-weak-map@~1.0.x:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/weak-map/-/weak-map-1.0.5.tgz#79691584d98607f5070bd3b70a40e6bb22e401eb"
 
 which-module@^2.0.0:
   version "2.0.0"

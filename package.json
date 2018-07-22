@@ -1,25 +1,26 @@
 {
   "name": "observable-runtime-ui",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "",
-  "main": "index.js",
   "scripts": {
     "dev:server": "nodemon --ignore public --ignore test index.js",
     "dev:frontend": "watchify -p [ browserify-livereload --host 127.0.0.1 --port 3333 ] -t sheetify/transform public/index.js -o public/bundle.js",
-    "dev": "concurrently 'yarn dev:server' 'yarn dev:frontend'",
-    "dist": "browserify -t sheetify/transform public/index.js -o public/bundle.js",
-    "start": "node index.js"
+    "dev": "concurrently 'npm run dev:server' 'npm run dev:frontend'",
+    "dist": "browserify -t sheetify/transform public/index.js | uglifyjs -cm > public/bundle.js",
+    "start": "node index.js",
+    "prepublish": "npm run dist"
+  },
+  "preferGlobal": true,
+  "bin": {
+    "serialoscd": "index.js"
   },
   "author": "Szymon Kaliski <hi@szymonkaliski.com> (http://szymonkaliski.com)",
   "license": "MIT",
   "dependencies": {
     "@observablehq/notebook-runtime": "^1.2.3",
-    "@thi.ng/atom": "^1.4.4",
     "@thi.ng/hdom": "^3.0.29",
     "@thi.ng/interceptors": "^1.8.8",
     "chokidar": "^2.0.4",
-    "collections": "^5.1.4",
-    "d3-require": "^1.1.0",
     "debug": "^3.1.0",
     "express": "^4.16.3",
     "get-parameter-names": "^0.3.0",
@@ -34,6 +35,7 @@
     "concurrently": "^3.6.0",
     "nodemon": "^1.18.2",
     "sheetify": "^7.3.3",
+    "uglify-es": "^3.3.9",
     "watchify": "^3.11.0"
   }
 }

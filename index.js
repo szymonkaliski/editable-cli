@@ -24,7 +24,7 @@ const start = ({ port, file }) => {
   const sockets = {};
 
   const emitContent = id => {
-    const content = fs.readFileSync(FILE, { encoding: "utf8" });
+    const content = fs.readFileSync(file, { encoding: "utf8" });
 
     if (id) {
       sockets[id].emit("content", content);
