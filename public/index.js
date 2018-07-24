@@ -112,6 +112,10 @@ const createApp = () => {
     defHandler.update(content);
   });
 
+  socket.on("fileName", fileName => {
+    document.title = `defn-cli: ${fileName}`;
+  });
+
   // start
   bus.dispatch([EV_SET_DEFS, []]);
 

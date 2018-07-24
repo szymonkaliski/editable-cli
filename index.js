@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const chokidar = require("chokidar");
 const createIO = require("socket.io");
 const debug = require("debug")("cli");
@@ -5,6 +7,7 @@ const express = require("express");
 const fs = require("fs");
 const getPort = require("get-port");
 const http = require("http");
+const path = require("path");
 const { argv } = require("yargs");
 
 const port = argv.port || process.env.PORT || 3000;
@@ -25,13 +28,17 @@ const start = ({ port, file }) => {
 
   const emitContent = id => {
     const content = fs.readFileSync(file, { encoding: "utf8" });
+    const fileName = path.basename(file);
+
+    const doEmit = id => {
+      sockets[id].emit("content", content);
+      sockets[id].emit("fileName", fileName);
+    };
 
     if (id) {
-      sockets[id].emit("content", content);
+      doEmit(id);
     } else {
-      Object.keys(sockets).forEach(id => {
-        sockets[id].emit("content", content);
-      });
+      Object.keys(sockets).forEach(id => doEmit(id));
     }
   };
 
@@ -53,7 +60,7 @@ const start = ({ port, file }) => {
 
   server.listen(port);
 
-  console.log(`running on: http://localhost:${port}/`);
+  console.log(`defn-cli running on: http://localhost:${port}/`);
 };
 
 getPort({ port }).then(port => start({ port, file }));

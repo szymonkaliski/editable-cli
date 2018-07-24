@@ -1,9 +1,9 @@
 {
-  "name": "observable-runtime-ui",
+  "name": "defn-cli",
   "version": "0.0.1",
-  "description": "",
+  "description": "command line notebooks powered by @observablehq",
   "scripts": {
-    "dev:server": "nodemon --ignore public --ignore test index.js",
+    "dev:server": "nodemon --ignore public --ignore test index.js test/notebook.js",
     "dev:frontend": "watchify -p [ browserify-livereload --host 127.0.0.1 --port 3333 ] -t sheetify/transform public/index.js -o public/bundle.js",
     "dev": "concurrently 'npm run dev:server' 'npm run dev:frontend'",
     "dist": "browserify -t sheetify/transform public/index.js | uglifyjs -cm > public/bundle.js",
@@ -12,7 +12,7 @@
   },
   "preferGlobal": true,
   "bin": {
-    "serialoscd": "index.js"
+    "defn-cli": "index.js"
   },
   "author": "Szymon Kaliski <hi@szymonkaliski.com> (http://szymonkaliski.com)",
   "license": "MIT",
