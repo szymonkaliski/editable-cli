@@ -128,11 +128,14 @@ module.exports = ({ bus }) => {
 
       try {
         eval(codeStr);
-        cleanNonExistingsDefs();
-        startVariables();
       } catch (e) {
-        console.error(e);
+        // TODO: display in frontend
+        console.error("eval", e);
       }
+
+      cleanNonExistingsDefs();
+      startVariables();
+      updateAllDefs();
     }
   };
 };

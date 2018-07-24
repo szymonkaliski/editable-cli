@@ -40,7 +40,6 @@ const renderElement = (bus, id) => {
   return {
     init: (el, _, args) => {
       el.appendChild(args);
-
       bus.dispatch([EV_SET_META, [id, el]]);
     },
 
@@ -125,15 +124,16 @@ const createApp = () => {
     return [
       "div.w-100.mw10.center.pa2.code",
       defs.map(({ id, value, error }) => {
-        let color = error ? "dark-red" : "";
+        let color = error ? "dark-red" : "dark-gray";
 
         return [
           "div",
+          { key: id },
           [
             "dl.flex.f7.lh-title.mv2",
-            [`dt.dib.b.w-20.tr.pr2.${color}`, id],
+            [`dt.dib.b.w-20.tr.pr2.br.bw1.${color}.b--${color}`, id],
             [
-              `dd.dib.ml0.gray.w-80.${color}`,
+              `dd.dib.ml0.pl2.gray.w-80.${color}`,
               error || renderValue(bus, id, value)
             ]
           ]
