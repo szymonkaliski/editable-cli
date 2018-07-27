@@ -2,7 +2,7 @@ const crypto = require("crypto");
 const getParameterNames = require("get-parameter-names");
 const { Runtime, Library } = require("@observablehq/notebook-runtime");
 
-const { EV_SET_DEFS } = require("./consts");
+const { EV_SET_DEFS, EV_SET_GLOBAL_ERROR } = require("./consts");
 
 const pick = (obj, props) => {
   let out = {};
@@ -32,15 +32,10 @@ module.exports = ({ bus }) => {
     seenDefs[id] = true;
 
     if (!impl) {
-      impl = id;
-      id = undefined;
+      return;
     }
 
     const hash = md5(impl.toString());
-
-    if (!id) {
-      id = hash;
-    }
 
     const defIdx = idx;
     idx = idx + 1;
@@ -126,16 +121,21 @@ module.exports = ({ bus }) => {
       idx = 0;
       seenDefs = {};
 
+      let evaled = false;
+
       try {
         eval(codeStr);
+        evaled = true;
       } catch (e) {
-        // TODO: display in frontend
-        console.error("eval", e);
+        bus.dispatch([EV_SET_GLOBAL_ERROR, e]);
       }
 
-      cleanNonExistingsDefs();
-      startVariables();
-      updateAllDefs();
+      if (evaled) {
+        cleanNonExistingsDefs();
+        startVariables();
+        updateAllDefs();
+        bus.dispatch([EV_SET_GLOBAL_ERROR, undefined]);
+      }
     }
   };
 };

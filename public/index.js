@@ -9,6 +9,7 @@ const { EV_SET_VALUE, FX_DISPATCH_NOW } = require("@thi.ng/interceptors/api");
 const {
   EV_SET_DEFS,
   EV_SET_META,
+  EV_SET_GLOBAL_ERROR,
   EV_CLEAR_META,
   SOCKET_URL
 } = require("./consts");
@@ -89,8 +90,20 @@ const renderValue = (bus, id, value) => {
   return `${value}`;
 };
 
+const renderDef = (id, value, { isError } = { isError: false }) => {
+  const color = isError ? "dark-red" : "dark-gray";
+
+  return [
+    "dl.flex.f7.lh-title.mv2",
+    [`dt.dib.b.w-20.tr.pr2.br.bw1.${color}.b--${color}`, id],
+    [`dd.dib.ml0.pl2.gray.w-80.${color}`, value]
+  ];
+};
+
 const events = {
   [EV_SET_DEFS]: valueSetter("defs"),
+
+  [EV_SET_GLOBAL_ERROR]: valueSetter("globalError"),
 
   [EV_SET_META]: (_, [__, [id, el]]) => ({
     [FX_DISPATCH_NOW]: [EV_SET_VALUE, [["meta", id, "el"], el]]
@@ -119,26 +132,18 @@ const createApp = () => {
   bus.dispatch([EV_SET_DEFS, []]);
 
   const root = () => {
-    const { defs } = bus.deref();
+    const { defs, globalError } = bus.deref();
 
     return [
       "div.w-100.mw10.center.pa2.code",
-      defs.map(({ id, value, error }) => {
-        let color = error ? "dark-red" : "dark-gray";
 
-        return [
-          "div",
-          { key: id },
-          [
-            "dl.flex.f7.lh-title.mv2",
-            [`dt.dib.b.w-20.tr.pr2.br.bw1.${color}.b--${color}`, id],
-            [
-              `dd.dib.ml0.pl2.gray.w-80.${color}`,
-              error || renderValue(bus, id, value)
-            ]
-          ]
-        ];
-      })
+      globalError && renderDef("compile error", globalError, { isError: true }),
+
+      defs.map(({ id, value, error }) =>
+        renderDef(id, error || renderValue(bus, id, value), {
+          isError: error
+        })
+      )
     ];
   };
 
