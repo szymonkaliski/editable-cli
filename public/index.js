@@ -37,6 +37,50 @@ const renderObject = obj => {
   ];
 };
 
+const MAX_LEN = 20;
+
+const renderArray = arr => {
+  const renderNum = num => ["span.pa1.mid-gray", num];
+  let items;
+
+  if (arr.length < MAX_LEN) {
+    items = [
+      [
+        "span",
+        "[",
+        arr.map((item, idx) => [
+          "span",
+          renderNum(item),
+          idx < arr.length - 1 ? "," : ""
+        ]),
+        "]"
+      ]
+    ];
+  } else {
+    const sliceSize = Math.floor(MAX_LEN / 3);
+
+    items = [
+      [
+        "span",
+        "[",
+        arr.slice(0, sliceSize).map(item => ["span", renderNum(item), ","]),
+        renderNum("..."),
+        ",",
+        arr
+          .slice(arr.length - sliceSize, arr.length)
+          .map((item, idx) => [
+            "span",
+            renderNum(item),
+            idx < sliceSize - 1 ? "," : ""
+          ]),
+        "]"
+      ]
+    ];
+  }
+
+  return [["span.pr2.mid-gray", `Array(${arr.length})`], ...items];
+};
+
 const renderElement = (bus, id) => {
   return {
     init: (el, _, args) => {
@@ -76,7 +120,7 @@ const renderValue = (bus, id, value) => {
       return value;
     }
 
-    return value.join(", ");
+    return renderArray(value);
   }
 
   if (isDate(value)) {
