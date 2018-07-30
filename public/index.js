@@ -28,57 +28,67 @@ const isDate = input => input instanceof Date;
 
 const isElement = input => input instanceof Element;
 
-const renderObject = obj => {
-  return [
-    "div",
-    Object.keys(obj).map(key => {
-      return ["span", key];
-    })
+const MAX_LEN = 17;
+
+let renderBasicValue;
+
+const renderArrayWithDelimiters = (arr, delimiters, depth) => {
+  const renderItem = item => [
+    "span.pl1.mid-gray",
+    renderBasicValue(item, depth + 1)
   ];
-};
 
-const MAX_LEN = 20;
-
-const renderArray = arr => {
-  const renderNum = num => ["span.pa1.mid-gray", num];
-  let items;
+  let items = [];
 
   if (arr.length < MAX_LEN) {
     items = [
-      [
+      delimiters[0],
+      ...arr.map((item, idx) => [
         "span",
-        "[",
-        arr.map((item, idx) => [
-          "span",
-          renderNum(item),
-          idx < arr.length - 1 ? "," : ""
-        ]),
-        "]"
-      ]
+        renderItem(item),
+        idx < arr.length - 1 ? "," : ""
+      ]),
+      ["span.pl1", delimiters[1]]
     ];
   } else {
     const sliceSize = Math.floor(MAX_LEN / 3);
 
     items = [
-      [
-        "span",
-        "[",
-        arr.slice(0, sliceSize).map(item => ["span", renderNum(item), ","]),
-        renderNum("..."),
-        ",",
-        arr
-          .slice(arr.length - sliceSize, arr.length)
-          .map((item, idx) => [
-            "span",
-            renderNum(item),
-            idx < sliceSize - 1 ? "," : ""
-          ]),
-        "]"
-      ]
+      delimiters[0],
+      ...arr.slice(0, sliceSize).map(item => ["span", renderItem(item), ","]),
+      renderItem("..."),
+      ",",
+      ...arr
+        .slice(arr.length - sliceSize, arr.length)
+        .map((item, idx) => [
+          "span",
+          renderItem(item),
+          idx < sliceSize - 1 ? "," : ""
+        ]),
+      ["span.pl1", delimiters[1]]
     ];
   }
 
-  return [["span.pr2.mid-gray", `Array(${arr.length})`], ...items];
+  return items;
+};
+
+const renderObject = (obj, depth) => {
+  const items =
+    depth === 0
+      ? renderArrayWithDelimiters(Object.keys(obj).sort(), ["{", "}"], depth)
+      : [];
+
+  return [[`span.mid-gray${depth === 0 ? ".pr2" : ""}`, `Object()`], ...items];
+};
+
+const renderArray = (arr, depth) => {
+  const items =
+    depth === 0 ? renderArrayWithDelimiters(arr, ["[", "]"], depth) : [];
+
+  return [
+    [`span.mid-gray${depth === 0 ? ".pr2" : ""}`, `Array(${arr.length})`],
+    ...items
+  ];
 };
 
 const renderElement = (bus, id) => {
@@ -110,17 +120,13 @@ const renderElement = (bus, id) => {
   };
 };
 
-const renderValue = (bus, id, value) => {
-  if (isElement(value)) {
-    return [renderElement(bus, id), value];
-  }
-
+renderBasicValue = (value, depth = 0) => {
   if (Array.isArray(value)) {
     if (isValidTagName(value[0])) {
       return value;
     }
 
-    return renderArray(value);
+    return renderArray(value, depth);
   }
 
   if (isDate(value)) {
@@ -128,19 +134,27 @@ const renderValue = (bus, id, value) => {
   }
 
   if (isObject(value)) {
-    return renderObject(value);
+    return renderObject(value, depth);
   }
 
   return `${value}`;
+};
+
+const renderValue = (bus, id, value) => {
+  if (isElement(value)) {
+    return [renderElement(bus, id), value];
+  }
+
+  return renderBasicValue(value);
 };
 
 const renderDef = (id, value, { isError } = { isError: false }) => {
   const color = isError ? "dark-red" : "dark-gray";
 
   return [
-    "dl.flex.f7.lh-title.mv2",
-    [`dt.dib.b.w-20.tr.pr2.br.bw1.${color}.b--${color}`, id],
-    [`dd.dib.ml0.pl2.gray.w-80.${color}`, value]
+    "div.flex.f7.lh-title.mv2",
+    [`div.b.w-20.tr.pr2.br.bw1.${color}.b--${color}`, id],
+    [`div.ml2.gray.w-80.flex.flex-wrap.${color}`, value]
   ];
 };
 
