@@ -56,7 +56,7 @@ const start = ({ port, file }) => {
     socket.on("disconnect", () => delete sockets[id]);
   });
 
-  app.use(express.static("public"));
+  app.use(express.static(path.join(__dirname, "public")));
 
   server.listen(port);
 

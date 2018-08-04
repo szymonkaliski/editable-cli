@@ -18,10 +18,6 @@ const createDefHandler = require("./def-handler");
 
 css("tachyons");
 
-const isValidTagName = input =>
-  typeof input === "string" &&
-  document.createElement(input).toString() !== "[object HTMLUnknownElement]";
-
 const isObject = input => input === Object(input);
 
 const isDate = input => input instanceof Date;
@@ -122,10 +118,6 @@ const renderElement = (bus, id) => {
 
 renderBasicValue = (value, depth = 0) => {
   if (Array.isArray(value)) {
-    if (isValidTagName(value[0])) {
-      return value;
-    }
-
     return renderArray(value, depth);
   }
 
@@ -137,7 +129,7 @@ renderBasicValue = (value, depth = 0) => {
     return renderObject(value, depth);
   }
 
-  return `${value}`;
+  return typeof value === "string" ? `"${value}"` : `${value}`;
 };
 
 const renderValue = (bus, id, value) => {
