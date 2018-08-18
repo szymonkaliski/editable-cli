@@ -37,5 +37,9 @@
     "sheetify": "^7.3.3",
     "uglify-es": "^3.3.9",
     "watchify": "^3.11.0"
+  },
+  "main": "index.js",
+  "directories": {
+    "example": "examples"
   }
 }
