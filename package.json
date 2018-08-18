@@ -1,5 +1,5 @@
 {
-  "name": "defn-cli",
+  "name": "editable",
   "version": "0.0.1",
   "description": "command line notebooks powered by @observablehq",
   "scripts": {
@@ -12,7 +12,7 @@
   },
   "preferGlobal": true,
   "bin": {
-    "defn-cli": "index.js"
+    "editable": "index.js"
   },
   "author": "Szymon Kaliski <hi@szymonkaliski.com> (http://szymonkaliski.com)",
   "license": "MIT",

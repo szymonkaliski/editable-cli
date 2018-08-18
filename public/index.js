@@ -175,7 +175,7 @@ const createApp = () => {
   });
 
   socket.on("fileName", fileName => {
-    document.title = `defn-cli: ${fileName}`;
+    document.title = `[editable] ${fileName}`;
   });
 
   // start

@@ -60,7 +60,7 @@ const start = ({ port, file }) => {
 
   server.listen(port);
 
-  console.log(`defn-cli running on: http://localhost:${port}/`);
+  console.log(`[editable] running on: http://localhost:${port}/`);
 };
 
 getPort({ port }).then(port => start({ port, file }));
