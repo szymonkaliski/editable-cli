@@ -30,7 +30,7 @@ It was also fun getting to know [observable/notebook-runtime](https://github.com
 ### Installation
 
 ```bash
-npm install -g editable
+npm install -g editable-cli
 ```
 
 ### Running

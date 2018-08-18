@@ -1,5 +1,5 @@
 {
-  "name": "editable",
+  "name": "editable-cli",
   "version": "0.0.1",
   "description": "command line notebooks powered by observablehq",
   "scripts": {
