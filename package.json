@@ -1,7 +1,7 @@
 {
   "name": "editable",
   "version": "0.0.1",
-  "description": "command line notebooks powered by @observablehq",
+  "description": "command line notebooks powered by observablehq",
   "scripts": {
     "dev:server": "nodemon --ignore public --ignore test index.js test/02.js",
     "dev:frontend": "watchify -p [ browserify-livereload --host 127.0.0.1 --port 3333 ] -t sheetify/transform public/index.js -o public/bundle.js",
