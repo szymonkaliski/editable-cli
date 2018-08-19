@@ -52,7 +52,7 @@ const renderArrayWithDelimiters = (arr, delimiters, depth) => {
     items = [
       delimiters[0],
       ...arr.slice(0, sliceSize).map(item => ["span", renderItem(item), ","]),
-      renderItem("..."),
+      ["span.pl1.mid-gray", "..."],
       ",",
       ...arr
         .slice(arr.length - sliceSize, arr.length)
