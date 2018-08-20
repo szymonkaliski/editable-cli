@@ -1,6 +1,6 @@
 {
   "name": "editable-cli",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "command line notebooks powered by observablehq",
   "scripts": {
     "dev:server": "nodemon --ignore public --ignore test index.js examples/intro.js",
