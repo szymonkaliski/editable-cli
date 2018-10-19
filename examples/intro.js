@@ -1,7 +1,7 @@
 def(
   "intro",
   md => md`
-# editable
+# editable-cli
 
 ## interactive notebooks powered by @observablehq
   `

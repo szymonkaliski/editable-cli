@@ -1,6 +1,6 @@
 {
   "name": "editable-cli",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "command line notebooks powered by observablehq",
   "scripts": {
     "dev:server": "nodemon --ignore public --ignore test index.js examples/intro.js",
@@ -12,7 +12,7 @@
   },
   "preferGlobal": true,
   "bin": {
-    "editable": "index.js"
+    "editable-cli": "index.js"
   },
   "author": "Szymon Kaliski <hi@szymonkaliski.com> (http://szymonkaliski.com)",
   "license": "MIT",

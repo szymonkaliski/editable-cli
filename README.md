@@ -1,11 +1,11 @@
-# `editable`
+# `editable-cli`
 ## Command line notebooks powered by [observablehq](https://beta.observablehq.com/)
 
 Local notebooks written in pure javascript, with the same live-relaod functionality as Observable!
 
 ![](./assets/screenshot.png)
 
-Install `editable`, create new file `editable-test.js` and run `editable ./editable-test.js`.
+Install `editable-cli`, (`npm install -g editable-cli`) create new file `editable-test.js` and run `editable-cli ./editable-test.js`.
 
 Create few cells using `def` global function (try saving the file between each edit to see live updates):
 
@@ -23,7 +23,7 @@ Named by [Peter van Hardenberg](https://twitter.com/pvh).
 
 I like the idea of notebooks, but I also really like my text editor.
 
-`editable` allows me to have both.
+`editable-cli` allows me to have both.
 
 It was also fun getting to know [observable/notebook-runtime](https://github.com/observablehq/notebook-runtime).
 
@@ -35,6 +35,6 @@ npm install -g editable-cli
 
 ### Running
 
-1. `editable ./file.js`
-2. open URL logged to console by `editable`
+1. `editable-cli ./file.js`
+2. open URL logged to console
 
